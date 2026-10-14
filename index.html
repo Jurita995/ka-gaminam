@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f8f3ea">
+<meta name="description" content="Asmeninė receptų ir produktų programėlė">
+<link rel="stylesheet" href="style.css">
+<title>Ką gaminam?</title>
+</head>
+<body>
+<header class="topbar">
+  <div><div class="eyebrow">TAVO ASMENINĖ VIRTUVĖ</div><h1>Ką gaminam? <span>🍓</span></h1></div>
+  <div class="row"><button class="icon-button" id="importBtn" title="Atkurti atsarginę kopiją" aria-label="Atkurti atsarginę kopiją">↙</button><input id="importFile" type="file" accept=".json,application/json" hidden><button class="icon-button" id="exportBtn" title="Atsarginė kopija" aria-label="Atsarginė kopija">↗</button></div>
+</header>
+<main>
+  <section id="homeView" class="view active">
+    <div class="welcome card">
+      <div class="welcome-copy"><p class="eyebrow">ŠIANDIENOS KLAUSIMAS</p><h2>Na, ką šiandien<br>skanaus gaminam?</h2><p>Be griežtų taisyklių. Pagal tai, ką turi ir ko norisi. 💛</p></div>
+      <div class="berry-art" aria-hidden="true">🍓</div>
+    </div>
+    <div class="quick-grid">
+      <button class="quick-card" data-go="recipes"><span>📖</span><b>Mano receptai</b><small id="recipeCount">0 receptų</small></button>
+      <button class="quick-card" data-go="products"><span>🧺</span><b>Produktai</b><small id="productCount">0 produktų</small></button>
+      <button class="quick-card" data-go="ideas"><span>✨</span><b>Ką panaudoti?</b><small>Paieškok idėjų</small></button>
+      <button class="quick-card" data-go="shopping"><span>🛒</span><b>Pirkiniai</b><small id="shoppingCount">0 produktų</small></button>
+    </div>
+    <div class="section-head"><div><p class="eyebrow">GREITA PRIEIGA</p><h2>Populiaru</h2></div><button class="text-button" data-go="products">Visi produktai →</button></div>
+    <div id="popularPreview" class="stack"></div>
+    <div class="section-head"><div><p class="eyebrow">KĄ JAU TURI</p><h2>Naujausi receptai</h2></div><button class="text-button" data-go="recipes">Visi →</button></div>
+    <div id="recentRecipes" class="stack"></div>
+  </section>
+
+  <section id="recipesView" class="view">
+    <div class="section-head"><div><p class="eyebrow">TAVO KULINARINĖS IDĖJOS</p><h2>Mano receptai</h2></div><button class="primary small" id="addRecipeBtn">＋ Pridėti</button></div>
+    <input id="recipeSearch" class="search" placeholder="🔎  Ieškoti pagal pavadinimą, produktą…">
+    <div id="categoryChips" class="chips"></div>
+    <div id="recipeList" class="stack"></div>
+  </section>
+
+  <section id="productsView" class="view">
+    <div class="section-head"><div><p class="eyebrow">ŠALDYTUVAS, SPINTELĖS IR KT.</p><h2>Produktai</h2></div><button class="primary small" id="addProductBtn">＋ Pridėti</button></div>
+    <input id="productSearch" class="search" placeholder="🔎  Ieškoti produkto…">
+    <div class="tabs" id="productTabs"><button class="tab active" data-filter="all">Visi</button><button class="tab" data-filter="popular">Populiaru</button><button class="tab" data-filter="have">Turiu</button><button class="tab" data-filter="out">Baigėsi</button><button class="tab" data-filter="blacklist">🚫 Juodasis sąrašas</button></div>
+    <div id="productList" class="stack"></div>
+  </section>
+
+  <section id="ideasView" class="view">
+    <p class="eyebrow">IMPROVIZACIJŲ ZONA</p><h2>Ką nori panaudoti?</h2>
+    <p class="muted">Pažymėk produktus, kuriuos norėtum sunaudoti. Gali rinktis ir vieną! Kol kas čia veikia paieška tavo išsaugotuose receptuose; DI idėjas prijungsime vėliau.</p>
+    <input id="ideaSearch" class="search" placeholder="🔎  Ieškoti produktų…">
+    <div id="ideaProducts" class="ingredient-grid"></div>
+    <div class="row between"><span id="selectedCount" class="muted">Pasirinkta: 0</span><button id="findIdeasBtn" class="primary">Rasti receptus ✨</button></div>
+    <div id="ideaResults" class="stack spaced"></div>
+  </section>
+
+  <section id="shoppingView" class="view">
+    <div class="section-head"><div><p class="eyebrow">KAI KAŽKAS BAIGIASI</p><h2>Pirkinių sąrašas</h2></div><button class="text-button" id="clearShoppingBtn">Išvalyti pažymėtus</button></div>
+    <p class="muted">Pažymėk nupirktus produktus – jie automatiškai grįš į „Turiu“.</p>
+    <div id="shoppingList" class="stack"></div>
+  </section>
+</main>
+<nav class="bottom-nav">
+  <button class="nav-item active" data-go="home"><span>⌂</span>Namai</button>
+  <button class="nav-item" data-go="recipes"><span>♡</span>Receptai</button>
+  <button class="nav-item" data-go="products"><span>▦</span>Produktai</button>
+  <button class="nav-item" data-go="shopping"><span>☷</span>Pirkiniai</button>
+</nav>
+
+<dialog id="recipeDialog">
+  <form id="recipeForm" method="dialog">
+    <div class="dialog-head"><h2 id="recipeDialogTitle">Naujas receptas</h2><button type="button" class="icon-button" data-close="recipeDialog">✕</button></div>
+    <input type="hidden" id="recipeId">
+    <label>Recepto pavadinimas<input id="rName" required placeholder="Pvz., Greiti makaronai"></label>
+    <label>Kategorija<input id="rCategory" list="recipeCategories" placeholder="Pvz., Vakarienė"><datalist id="recipeCategories"><option>Vakarienė</option><option>Pusryčiai</option><option>Desertai</option><option>Užkandžiai</option><option>Tešla ir kepiniai</option></datalist></label>
+    <label>Pagrindiniai produktai<textarea id="rIngredients" rows="3" placeholder="Makaronai, sūris, pienas…"></textarea></label>
+    <label>Gaminimo eiga<textarea id="rSteps" rows="4" placeholder="Trumpai, savais žodžiais. Galima improvizuoti!"></textarea></label>
+    <label>Pastabos<textarea id="rNotes" rows="2" placeholder="Ką kitą kartą keisti?"></textarea></label>
+    <div class="row"><button type="submit" class="primary grow">Išsaugoti receptą</button><button type="button" id="deleteRecipeBtn" class="danger hidden">Ištrinti</button></div>
+  </form>
+</dialog>
+
+<dialog id="productDialog">
+  <form id="productForm" method="dialog">
+    <div class="dialog-head"><h2 id="productDialogTitle">Naujas produktas</h2><button type="button" class="icon-button" data-close="productDialog">✕</button></div>
+    <input type="hidden" id="productId">
+    <label>Produkto pavadinimas<input id="pName" required placeholder="Pvz., Šaldytos mėlynės"></label>
+    <label>Kategorija<input id="pCategory" list="productCategories" placeholder="Pvz., Šaldytos uogos ir vaisiai"><datalist id="productCategories"><option>Šaldytos uogos ir vaisiai</option><option>Pieno produktai</option><option>Daržovės</option><option>Mėsa</option><option>Makaronai ir kruopos</option><option>Miltai ir kepiniai</option><option>Prieskoniai</option><option>Kita</option></datalist></label>
+    <label>Būsena<select id="pStatus"><option value="have">Turiu</option><option value="out">Baigėsi</option></select></label>
+    <label class="check-label"><input type="checkbox" id="pPopular"> Rodyti skiltyje „Populiaru“</label>
+    <label class="check-label"><input type="checkbox" id="pBlacklisted"> 🚫 Įtraukti į juodąjį sąrašą</label>
+    <label>Pastaba<textarea id="pNotes" rows="2" placeholder="Pvz., neskanus šis prekės ženklas – nepirkti"></textarea></label>
+    <div class="row"><button type="submit" class="primary grow">Išsaugoti produktą</button><button type="button" id="deleteProductBtn" class="danger hidden">Ištrinti</button></div>
+  </form>
+</dialog>
+<div id="toast" class="toast" role="status"></div>
+<script src="app.js"></script>
+</body></html>
