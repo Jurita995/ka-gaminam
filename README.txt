@@ -12,6 +12,3 @@ Failai skirti įkelti į GitHub Pages arba kitą HTTPS statinį hostingą.
 Duomenys kol kas saugomi localStorage konkrečioje naršyklėje ir įrenginyje. Reguliariai eksportuok atsarginę kopiją (↗). Atkūrimas – mygtukas ↙. Tai dar ne debesijos sinchronizavimas.
 
 Šiame pakete pridėta navigacijos istorija (Atgal) ir matomas importo mygtukas. AI/OCR dar neprijungti.
-
-
-Nauja versija: receptams galima pridėti nuotrauką (ji sumažinama prieš išsaugant); produktų būsenos: Turiu, Nedaug, Baigėsi. Prieš atnaujinimą rekomenduojama atsisiųsti JSON atsarginę kopiją.
