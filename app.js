@@ -31,6 +31,7 @@ let currentView='home'; let viewHistory=['home']; let ignorePop=false;
 function paintView(name){$$('.view').forEach(v=>v.classList.toggle('active',v.id===name+'View'));$$('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.go===name));currentView=name;if(name==='ideas')renderIdeaProducts();window.scrollTo({top:0,behavior:'smooth'})}
 function showView(name, push=true){if(!name||name===currentView)return;if(push){viewHistory.push(name);history.pushState({appView:name},'', '#'+name)}paintView(name)}
 $$('[data-go]').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.go)));
+$$('[data-go][role="button"]').forEach(b=>b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();showView(b.dataset.go)}}));
 window.addEventListener('popstate',e=>{let name=e.state&&e.state.appView; if(name){viewHistory.push(name);paintView(name)}else{paintView('home')}});
 if(location.hash){let initial=location.hash.slice(1);if(['home','recipes','products','ideas','shopping'].includes(initial))paintView(initial)}
 $$('[data-close]').forEach(b=>b.addEventListener('click',()=>$('#'+b.dataset.close).close()));
