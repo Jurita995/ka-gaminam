@@ -10,7 +10,7 @@
 </head>
 <body>
 <header class="topbar">
-<h1 data-go="home" title="Grįžti į pagrindinį meniu" style="cursor:pointer">Ką gaminam? <span>🍓</span></h1>
+  <div><div class="eyebrow">TAVO ASMENINĖ VIRTUVĖ</div><h1>Ką gaminam? <span>🍓</span></h1></div>
   <div class="row"><button class="icon-button" id="importBtn" title="Atkurti atsarginę kopiją" aria-label="Atkurti atsarginę kopiją">↙</button><input id="importFile" type="file" accept=".json,application/json" hidden><button class="icon-button" id="exportBtn" title="Atsarginė kopija" aria-label="Atsarginė kopija">↗</button></div>
 </header>
 <main>
@@ -75,7 +75,7 @@
     <label>Kategorija<input id="rCategory" list="recipeCategories" placeholder="Pvz., Vakarienė"><datalist id="recipeCategories"><option>Vakarienė</option><option>Pusryčiai</option><option>Desertai</option><option>Užkandžiai</option><option>Tešla ir kepiniai</option></datalist></label>
     <label>Pagrindiniai produktai<textarea id="rIngredients" rows="3" placeholder="Makaronai, sūris, pienas…"></textarea></label>
     <label>Gaminimo eiga<textarea id="rSteps" rows="4" placeholder="Trumpai, savais žodžiais. Galima improvizuoti!"></textarea></label>
-    <label>Pastabos<textarea id="rNotes" rows="2" placeholder="Ką kitą kartą keisti?"></textarea></label>
+    <label>Nuotrauka <input id="rImage" type="file" accept="image/*" capture="environment"><span class="note">Pasirink iš galerijos arba nufotografuok. Nuotrauka bus sumažinta, kad užimtų mažiau vietos.</span></label><div id="rImagePreviewWrap" class="photo-preview-wrap hidden"><img id="rImagePreview" alt="Recepto nuotraukos peržiūra"><button type="button" id="removeRecipeImage" class="mini">Pašalinti nuotrauką</button></div><label>Pastabos<textarea id="rNotes" rows="2" placeholder="Ką kitą kartą keisti?"></textarea></label>
     <div class="row"><button type="submit" class="primary grow">Išsaugoti receptą</button><button type="button" id="deleteRecipeBtn" class="danger hidden">Ištrinti</button></div>
   </form>
 </dialog>
@@ -86,7 +86,7 @@
     <input type="hidden" id="productId">
     <label>Produkto pavadinimas<input id="pName" required placeholder="Pvz., Šaldytos mėlynės"></label>
     <label>Kategorija<input id="pCategory" list="productCategories" placeholder="Pvz., Šaldytos uogos ir vaisiai"><datalist id="productCategories"><option>Šaldytos uogos ir vaisiai</option><option>Pieno produktai</option><option>Daržovės</option><option>Mėsa</option><option>Makaronai ir kruopos</option><option>Miltai ir kepiniai</option><option>Prieskoniai</option><option>Kita</option></datalist></label>
-    <label>Būsena<select id="pStatus"><option value="have">Turiu</option><option value="out">Baigėsi</option></select></label>
+    <label>Būsena<select id="pStatus"><option value="have">Turiu</option><option value="low">Nedaug</option><option value="out">Baigėsi</option></select></label>
     <label class="check-label"><input type="checkbox" id="pPopular"> Rodyti skiltyje „Populiaru“</label>
     <label class="check-label"><input type="checkbox" id="pBlacklisted"> 🚫 Įtraukti į juodąjį sąrašą</label>
     <label>Pastaba<textarea id="pNotes" rows="2" placeholder="Pvz., neskanus šis prekės ženklas – nepirkti"></textarea></label>
