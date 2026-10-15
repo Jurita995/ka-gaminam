@@ -10,7 +10,7 @@
 </head>
 <body>
 <header class="topbar">
-  <div><div class="eyebrow">TAVO ASMENINĖ VIRTUVĖ</div><h1><button type="button" id="homeLogo" class="logo-button">Ką gaminam? <span>🍓</span></button></h1></div>
+  <div><div class="eyebrow">TAVO ASMENINĖ VIRTUVĖ</div><h1>Ką gaminam? <span>🍓</span></h1></div>
   <div class="row"><button class="icon-button" id="importBtn" title="Atkurti atsarginę kopiją" aria-label="Atkurti atsarginę kopiją">↙</button><input id="importFile" type="file" accept=".json,application/json" hidden><button class="icon-button" id="exportBtn" title="Atsarginė kopija" aria-label="Atsarginė kopija">↗</button></div>
 </header>
 <main>
@@ -55,17 +55,16 @@
     <div id="ideaResults" class="stack spaced"></div>
   </section>
 
-  <section id="galleryView" class="view">
-    <div class="section-head"><div><p class="eyebrow">SKONIAI IR PRISIMINIMAI</p><h2>Maisto dienoraštis</h2></div><button class="primary small" id="captureFoodBtn">📸 Įamžinti ką valgiau</button></div>
-    <p class="muted">Nuotraukos, mažos istorijos ir skanūs prisiminimai. Pildyk tik tada, kai norisi. 💛</p>
-    <div class="tabs" id="galleryTabs"><button class="tab active" data-gallery="album">Nuotraukų albumas</button><button class="tab" data-gallery="diary">Dienoraštis pagal dienas</button></div>
-    <div id="foodGallery" class="food-gallery"></div>
-  </section>
-
   <section id="shoppingView" class="view">
     <div class="section-head"><div><p class="eyebrow">KAI KAŽKAS BAIGIASI</p><h2>Pirkinių sąrašas</h2></div><button class="text-button" id="clearShoppingBtn">Išvalyti pažymėtus</button></div>
     <p class="muted">Pažymėk nupirktus produktus – jie automatiškai grįš į „Turiu“.</p>
     <div id="shoppingList" class="stack"></div>
+  </section>
+  <section id="galleryView" class="view">
+    <div class="section-head"><div><p class="eyebrow">MAŽI SKANŪS PRISIMINIMAI</p><h2>Maisto dienoraštis</h2></div><button class="primary small" id="addDiaryBtn">📸 Įamžinti ką valgiau</button></div>
+    <p class="muted">Nuotrauka ir trumpas komentaras — tiek, kiek norisi. Nieko neprivaloma pildyti. 💛</p>
+    <div class="tabs" id="galleryTabs"><button class="tab active" data-gallery-mode="album">🖼️ Albumas</button><button class="tab" data-gallery-mode="days">📅 Pagal dienas</button></div>
+    <div id="diaryList" class="stack"></div>
   </section>
 </main>
 <nav class="bottom-nav">
@@ -98,23 +97,18 @@
     <label>Būsena<select id="pStatus"><option value="have">Turiu</option><option value="low">Nedaug</option><option value="out">Baigėsi</option></select></label>
     <label class="check-label"><input type="checkbox" id="pPopular"> Rodyti skiltyje „Populiaru“</label>
     <label class="check-label"><input type="checkbox" id="pBlacklisted"> 🚫 Įtraukti į juodąjį sąrašą</label>
-    <label>Pastaba<textarea id="pNotes" rows="2" placeholder="Pvz., neskanus šis prekės ženklas – nepirkti"></textarea></label>
-    <label>Produkto nuotraukos (nebūtina)<input id="pImages" type="file" accept="image/*" multiple><span class="note">Gali fotografuoti arba rinktis iš galerijos. Sudėtį ar instrukciją fotografuoti neprivaloma. Galima pridėti kelias nuotraukas.</span></label><div id="pImagePreview" class="photo-strip"></div>
+    <label>Produkto nuotraukos (nebūtina)<input id="pImages" type="file" accept="image/*" multiple><span class="note">Gali fotografuoti arba rinktis iš galerijos. Sudėties fotografuoti nereikia. Galima pridėti kelias nuotraukas.</span></label><div id="pImagesPreview" class="photo-grid"></div><label>Pastaba<textarea id="pNotes" rows="2" placeholder="Pvz., neskanus šis prekės ženklas – nepirkti"></textarea></label>
     <div class="row"><button type="submit" class="primary grow">Išsaugoti produktą</button><button type="button" id="deleteProductBtn" class="danger hidden">Ištrinti</button></div>
   </form>
 </dialog>
-
-<dialog id="foodDialog">
-  <form id="foodForm" method="dialog">
-    <div class="dialog-head"><h2>Įamžink ką valgei 📸</h2><button type="button" class="icon-button" data-close="foodDialog">✕</button></div>
-    <label>Nuotrauka<input id="foodImage" type="file" accept="image/*" required><span class="note">Gali nufotografuoti arba pasirinkti nuotrauką iš galerijos.</span></label>
-    <div id="foodImagePreviewWrap" class="photo-preview-wrap hidden"><img id="foodImagePreview" alt="Maisto nuotraukos peržiūra"><button type="button" id="removeFoodImage" class="mini">Pašalinti</button></div>
-    <label>Data<input id="foodDate" type="date" required></label>
-    <label>Trumpas komentaras (nebūtina)<textarea id="foodNote" rows="2" placeholder="Pvz., išbandžiau naują padažą 🤭"></textarea></label>
-    <label>Susieti su receptu (nebūtina)<select id="foodRecipe"><option value="">Nesieti su receptu</option></select></label>
-    <div class="row"><button type="submit" class="primary grow">Išsaugoti prisiminimą</button></div>
-  </form>
-</dialog>
+<dialog id="diaryDialog"><form id="diaryForm" method="dialog">
+  <div class="dialog-head"><h2>Įamžinti ką valgiau 📸</h2><button type="button" class="icon-button" data-close="diaryDialog">✕</button></div>
+  <label>Nuotraukos (gali pridėti kelias)<input id="dImages" type="file" accept="image/*" multiple><span class="note">Pasirink iš galerijos arba nufotografuok.</span></label><div id="dImagesPreview" class="photo-grid"></div>
+  <label>Data<input id="dDate" type="date"></label>
+  <label>Komentaras (nebūtina)<textarea id="dComment" rows="3" placeholder="Pvz., pirmą kartą bandžiau, visai patiko 🤭"></textarea></label>
+  <label>Receptas (nebūtina)<select id="dRecipe"><option value="">Nesieti su receptu</option></select></label>
+  <div class="row"><button type="submit" class="primary grow">Išsaugoti prisiminimą</button></div>
+</form></dialog>
 <div id="toast" class="toast" role="status"></div>
 <script src="app.js"></script>
 </body></html>
