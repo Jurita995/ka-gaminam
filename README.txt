@@ -1,17 +1,24 @@
-KĄ GAMINAM? – svetainės paketukas
+KĄ GAMINAM? – ATNAUJINTAS PAKETAS
 
-Failai skirti įkelti į GitHub Pages arba kitą HTTPS statinį hostingą.
+Failai:
+- index.html – programėlės struktūra
+- style.css – išvaizda
+- app.js – veikimas ir vietiniai duomenys
+- manifest.json – įdiegimo metaduomenys
+- sw.js – offline talpykla
 
-1. Sukurk GitHub paskyrą / prisijunk prie jos.
-2. Sukurk naują public repository, pvz. ka-gaminam.
-3. Įkelk visus šio aplanko failus į repo šaknį (index.html, style.css, app.js, manifest.json, sw.js).
-4. Repository Settings → Pages → Deploy from a branch → main → /(root) → Save.
-5. Palauk, kol GitHub Pages parodys svetainės adresą. Atidaryk jį Chrome telefone.
-6. Chrome meniu ⋮ → „Pridėti prie pagrindinio ekrano“ / „Įdiegti programą“.
+Nauja šiame pakete:
+- Maisto dienoraštis su „Įamžinti ką valgiau“ mygtuku
+- Nuotraukų albumo ir dienoraščio pagal dienas vaizdai
+- Prie nuotraukos galima pridėti datą, komentarą ir susieti receptą
+- Pasirinktinės produktų nuotraukos, galima pridėti kelias
+- Nuotraukos sumažinamos prieš išsaugojimą
+- Programėlės pavadinimas viršuje grąžina į pradžią
 
-Duomenys kol kas saugomi localStorage konkrečioje naršyklėje ir įrenginyje. Reguliariai eksportuok atsarginę kopiją (↗). Atkūrimas – mygtukas ↙. Tai dar ne debesijos sinchronizavimas.
+Svarbu:
+- Duomenys saugomi konkretaus įrenginio naršyklėje (localStorage), jie automatiškai nesinchronizuojami tarp telefono ir kompiuterio.
+- Prieš keičiant svetainės failus, telefone išsisaugok atsarginę kopiją per rodyklę į viršų.
+- Naujas kodas negali atkurti nuotraukų, kurių atsarginėje kopijoje nebuvo.
+- Didelis nuotraukų kiekis gali užpildyti naršyklės saugyklą. Nuotraukos automatiškai sumažinamos; jei saugykla užsipildytų, eksportuok atsarginę kopiją.
 
-Šiame pakete pridėta navigacijos istorija (Atgal) ir matomas importo mygtukas. AI/OCR dar neprijungti.
-
-
-Nauja versija: receptams galima pridėti nuotrauką (ji sumažinama prieš išsaugant); produktų būsenos: Turiu, Nedaug, Baigėsi. Prieš atnaujinimą rekomenduojama atsisiųsti JSON atsarginę kopiją.
+GitHub Pages: įkelk šių failų turinį į repo šaknį, pakeisdamas esamus failus.
