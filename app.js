@@ -29,15 +29,14 @@ function compressImage(file){return new Promise((resolve,reject)=>{const reader=
 async function handleRecipeImage(fileInput){const f=fileInput.files[0];if(!f)return;if(!f.type.startsWith('image/')){toast('Pasirink nuotraukos failą');fileInput.value='';return}if(f.size>12*1024*1024){toast('Nuotrauka labai didelė — pasirink mažesnę');fileInput.value='';return}try{pendingRecipeImage=await compressImage(f);updateRecipeImagePreview();toast('Nuotrauka pridėta 📸')}catch(err){toast('Nepavyko atidaryti nuotraukos')}finally{fileInput.value=''}}
 $('#rImage').addEventListener('change',e=>handleRecipeImage(e.target));
 $('#rCamera').addEventListener('change',e=>handleRecipeImage(e.target));
-$('#rTakePhotoBtn').onclick=()=>$('#rCamera').click();
-$('#rChoosePhotoBtn').onclick=()=>$('#rImage').click();
+$('#rTakePhotoBtn').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();$('#rCamera').click()});
+$('#rChoosePhotoBtn').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();$('#rImage').click()});
 $('#removeRecipeImage').onclick=()=>{pendingRecipeImage='';$('#rImage').value='';$('#rCamera').value='';updateRecipeImagePreview()};
 let currentView='home'; let viewHistory=['home']; let ignorePop=false;
 function paintView(name){$$('.view').forEach(v=>v.classList.toggle('active',v.id===name+'View'));$$('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.go===name));currentView=name;if(name==='ideas')renderIdeaProducts();if(name==='gallery')renderDiary();window.scrollTo({top:0,behavior:'smooth'})}
 function showView(name, push=true){if(!name||name===currentView)return;if(push){viewHistory.push(name);history.pushState({appView:name},'', '#'+name)}paintView(name)}
 $$('[data-go]').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.go)));
-const homeLogo=$('#homeLogo');
-if(homeLogo) homeLogo.addEventListener('click',()=>{viewHistory=['home'];history.replaceState({appView:'home'},'','#home');paintView('home')});
+document.addEventListener('click',e=>{const logo=e.target.closest('#homeLogo');if(!logo)return;e.preventDefault();viewHistory=['home'];try{history.replaceState({appView:'home'},'','#home')}catch(err){}paintView('home')});
 window.addEventListener('popstate',e=>{let name=e.state&&e.state.appView; if(name){viewHistory.push(name);paintView(name)}else{paintView('home')}});
 if(location.hash){let initial=location.hash.slice(1);if(['home','recipes','products','ideas','shopping','gallery'].includes(initial))paintView(initial)}
 $$('[data-close]').forEach(b=>b.addEventListener('click',()=>$('#'+b.dataset.close).close()));
@@ -64,8 +63,8 @@ function renderProductImagePreview(){$('#pImagesPreview').innerHTML=pendingProdu
 async function handleProductImages(fileInput){for(const f of [...fileInput.files]){if(!f.type.startsWith('image/'))continue;if(f.size>12*1024*1024){toast('Viena nuotrauka per didelė — pasirink mažesnę');continue}try{pendingProductImages.push(await compressImage(f))}catch(err){toast('Nepavyko atidaryti nuotraukos')}}fileInput.value='';renderProductImagePreview()}
 $('#pImages').addEventListener('change',e=>handleProductImages(e.target));
 $('#pCamera').addEventListener('change',e=>handleProductImages(e.target));
-$('#pTakePhotoBtn').onclick=()=>$('#pCamera').click();
-$('#pChoosePhotoBtn').onclick=()=>$('#pImages').click();
+$('#pTakePhotoBtn').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();$('#pCamera').click()});
+$('#pChoosePhotoBtn').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();$('#pImages').click()});
 function openProduct(id){let p=data.products.find(p=>p.id===id);$('#productForm').reset();pendingProductImages=(p?.images|| (p?.image?[p.image]:[])).slice();renderProductImagePreview();$('#productId').value=p?.id||'';$('#productDialogTitle').textContent=p?'Redaguoti produktą':'Naujas produktas';$('#pName').value=p?.name||'';$('#pCategory').value=p?.category||'';$('#pStatus').value=p?.status||'have';$('#pPopular').checked=!!p?.popular;$('#pBlacklisted').checked=!!p?.blacklisted;$('#pNotes').value=p?.notes||'';$('#deleteProductBtn').classList.toggle('hidden',!p);$('#productDialog').showModal()}
 $('#productForm').onsubmit=e=>{e.preventDefault();let id=$('#productId').value;let p={id:id||uid(),name:$('#pName').value.trim(),category:$('#pCategory').value.trim()||'Be kategorijos',status:$('#pStatus').value,popular:$('#pPopular').checked,blacklisted:$('#pBlacklisted').checked,notes:$('#pNotes').value.trim(),images:pendingProductImages};if(id){let old=data.products.find(x=>x.id===id);data.products[data.products.findIndex(x=>x.id===id)]=p;if(p.status==='out'&&!data.shopping.includes(id))data.shopping.push(id);if(p.status==='have')data.shopping=data.shopping.filter(x=>x!==id)}else{data.products.unshift(p);if(p.status==='out')data.shopping.push(p.id)}$('#productDialog').close();save();toast('Produktas išsaugotas ✓')};
 $('#deleteProductBtn').onclick=()=>{let id=$('#productId').value;if(confirm('Ištrinti produktą ir pašalinti iš pirkinių sąrašo?')){data.products=data.products.filter(p=>p.id!==id);data.shopping=data.shopping.filter(x=>x!==id);selectedIngredients.delete(id);$('#productDialog').close();save();toast('Produktas ištrintas')}}
@@ -89,9 +88,9 @@ function renderDiaryImagePreview(){$('#dImagesPreview').innerHTML=pendingDiaryIm
 async function handleDiaryImages(fileInput){for(const f of [...fileInput.files]){if(!f.type.startsWith('image/'))continue;if(f.size>12*1024*1024){toast('Viena nuotrauka per didelė — pasirink mažesnę');continue}try{pendingDiaryImages.push(await compressImage(f))}catch(err){toast('Nepavyko atidaryti nuotraukos')}}fileInput.value='';renderDiaryImagePreview()}
 $('#dImages').addEventListener('change',e=>handleDiaryImages(e.target));
 $('#dCamera').addEventListener('change',e=>handleDiaryImages(e.target));
-$('#dTakePhotoBtn').onclick=()=>$('#dCamera').click();
-$('#dChoosePhotoBtn').onclick=()=>$('#dImages').click();
-$('#addDiaryBtn').onclick=()=>{$('#diaryForm').reset();pendingDiaryImages=[];renderDiaryImagePreview();$('#dDate').value=localDate();renderDiaryRecipeOptions();$('#diaryDialog').showModal()};
+$('#dTakePhotoBtn').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();$('#dCamera').click()});
+$('#dChoosePhotoBtn').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();$('#dImages').click()});
+document.addEventListener('click',e=>{const btn=e.target.closest('#addDiaryBtn');if(!btn)return;e.preventDefault();const dlg=$('#diaryDialog');if(dlg.open)return;$('#diaryForm').reset();pendingDiaryImages=[];renderDiaryImagePreview();$('#dDate').value=localDate();renderDiaryRecipeOptions();dlg.showModal()});
 $('#diaryForm').onsubmit=e=>{e.preventDefault();if(!pendingDiaryImages.length){toast('Pridėk bent vieną nuotrauką 📸');return}data.diary.unshift({id:uid(),date:$('#dDate').value||localDate(),comment:$('#dComment').value.trim(),recipeId:$('#dRecipe').value||'',images:[...pendingDiaryImages]});$('#diaryDialog').close();save();renderDiary();toast('Maisto prisiminimas išsaugotas ❤️')};
 $('#galleryTabs').querySelectorAll('[data-gallery-mode]').forEach(b=>b.onclick=()=>{diaryMode=b.dataset.galleryMode;$('#galleryTabs').querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));renderDiary()});
 

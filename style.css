@@ -7,8 +7,10 @@
 /* Maisto dienoraštis ir pasirenkamos produkto nuotraukos */
 .photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;margin:8px 0 14px}.photo-tile{min-width:0}.photo-tile img{width:100%;height:95px;object-fit:cover;border-radius:12px;display:block;margin-bottom:5px}.product-thumb{width:64px;height:64px;object-fit:cover;border-radius:14px;flex-shrink:0}.diary-card{background:var(--paper);border:1px solid var(--line);border-radius:18px;overflow:hidden}.diary-photos{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:2px;background:var(--line)}.diary-photos img{width:100%;height:180px;object-fit:cover;display:block}.diary-copy{padding:14px 16px}.diary-copy p{white-space:pre-wrap;overflow-wrap:anywhere}.diary-date{margin:18px 4px 10px}.note{display:block;color:var(--muted);font-size:.82rem;margin-top:5px}.quick-grid{grid-template-columns:repeat(auto-fit,minmax(145px,1fr))}.bottom-nav{overflow-x:auto}.bottom-nav .nav-item{min-width:68px}
 
-/* Verified update: explicit camera/gallery controls and clickable home logo */
-.logo-home{font:inherit;font-weight:inherit;letter-spacing:inherit;color:inherit;background:transparent;border:0;padding:0;margin:0;text-align:left;cursor:pointer}
-.logo-home:focus-visible{outline:3px solid var(--accent);outline-offset:4px;border-radius:6px}
+/* v5: buttons are separate from labels to avoid implicit file-input activation */
+.field{display:block;margin:12px 0}
+.field-label{display:block;font-weight:600;margin-bottom:6px}
 .photo-actions{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.photo-actions button{cursor:pointer;touch-action:manipulation}
+.logo-home{cursor:pointer;touch-action:manipulation;border:0;background:transparent;color:inherit;font:inherit;padding:0}
 .visually-hidden-file{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
